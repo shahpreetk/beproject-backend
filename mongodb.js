@@ -12,6 +12,21 @@ MongoClient.connect(
       return console.log("Unable to connect to database!");
     }
 
-    console.log("Connected correctly!!");
+    const db = client.db(databaseName);
+
+    db.collection("bookings").insertOne(
+      {
+        email: "thisisuser1@yopmail.com",
+        audi: true,
+        turf: false,
+      },
+      (error, result) => {
+        if (error) {
+          return console.log("Unable to insert user");
+        }
+
+        console.log(result.ops);
+      }
+    );
   }
 );
