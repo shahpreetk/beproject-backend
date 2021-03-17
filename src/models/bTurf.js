@@ -16,16 +16,13 @@ const bTurfSchema = new mongoose.Schema(
       required: true,
     },
     parking: {
-      type: Boolean,
-      default: false,
+      type: String,
     },
     changing: {
-      type: Boolean,
-      default: false,
+      type: String,
     },
     equipment: {
-      type: Boolean,
-      default: false,
+      type: String,
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,

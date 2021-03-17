@@ -16,28 +16,22 @@ const bAudiSchema = new mongoose.Schema(
       required: true,
     },
     parking: {
-      type: Boolean,
-      default: false,
+      type: String,
     },
     catering: {
-      type: Boolean,
-      default: false,
+      type: String,
     },
     podium: {
-      type: Boolean,
-      default: false,
+      type: String,
     },
     music: {
-      type: Boolean,
-      default: false,
+      type: String,
     },
     less100: {
-      type: Boolean,
-      default: false,
+      type: String,
     },
     backstage: {
-      type: Boolean,
-      default: false,
+      type: String,
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
