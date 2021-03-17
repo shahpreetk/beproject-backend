@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const bookingSchema = new mongoose.Schema(
+const bAudiSchema = new mongoose.Schema(
   {
     date: {
       type: String,
@@ -29,6 +29,6 @@ const bookingSchema = new mongoose.Schema(
   }
 );
 
-const Booking = mongoose.model("Booking", bookingSchema);
+const BAudi = mongoose.model("BAudi", bAudiSchema);
 
-module.exports = Booking;
+module.exports = BAudi;

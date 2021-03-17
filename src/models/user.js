@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Booking = require("./booking");
+const BAudi = require("./bAudi");
+const BTurf = require("./bTurf");
 
 const userSchema = new mongoose.Schema(
   {
@@ -60,8 +61,14 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.virtual("bookings", {
-  ref: "Booking",
+userSchema.virtual("bAudis", {
+  ref: "BAudi",
+  localField: "_id",
+  foreignField: "owner",
+});
+
+userSchema.virtual("bTurfs", {
+  ref: "BTurf",
   localField: "_id",
   foreignField: "owner",
 });
@@ -112,7 +119,8 @@ userSchema.pre("save", async function (next) {
 
 userSchema.pre("remove", async function (next) {
   const user = this;
-  await Booking.deleteMany({ owner: user._id });
+  await BAudi.deleteMany({ owner: user._id });
+  await BTurf.deleteMany({ owner: user._id });
   next();
 });
 
