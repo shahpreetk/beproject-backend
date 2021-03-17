@@ -15,8 +15,29 @@ const bAudiSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    addOns: {
-      type: Array,
+    parking: {
+      type: Boolean,
+      default: false,
+    },
+    catering: {
+      type: Boolean,
+      default: false,
+    },
+    podium: {
+      type: Boolean,
+      default: false,
+    },
+    music: {
+      type: Boolean,
+      default: false,
+    },
+    less100: {
+      type: Boolean,
+      default: false,
+    },
+    backstage: {
+      type: Boolean,
+      default: false,
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
