@@ -15,23 +15,8 @@ const bAudiSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    parking: {
-      type: String,
-    },
-    catering: {
-      type: String,
-    },
-    podium: {
-      type: String,
-    },
-    music: {
-      type: String,
-    },
-    less100: {
-      type: String,
-    },
-    backstage: {
-      type: String,
+    addons: {
+      type: Array,
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
