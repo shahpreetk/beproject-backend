@@ -12,7 +12,7 @@ router.post("/bturfs", auth, async (req, res) => {
     await bTurf.save();
     res.status(201).send(bTurf);
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).json({ msg: "Failed to book turf" });
   }
 });
 

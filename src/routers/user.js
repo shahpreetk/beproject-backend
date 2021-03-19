@@ -31,7 +31,7 @@ router.post("/users/login", async (req, res) => {
 
     res.send({ user, token });
   } catch (e) {
-    res.status(400).json({ msg: "Login Failed" });
+    res.status(400).json({ msg: "Invalid Credentials" });
   }
 });
 
@@ -59,7 +59,11 @@ router.post("/users/logoutAll", auth, async (req, res) => {
 });
 
 router.get("/users/me", auth, async (req, res) => {
-  res.send(req.user);
+  try {
+    res.send(req.user);
+  } catch (error) {
+    res.status(400).send(error);
+  }
 });
 
 router.patch("/users/me", auth, async (req, res) => {

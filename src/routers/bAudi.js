@@ -12,7 +12,7 @@ router.post("/baudis", auth, async (req, res) => {
     await bAudi.save();
     res.status(201).send(bAudi);
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).json({ msg: "Failed to book auditorium" });
   }
 });
 
