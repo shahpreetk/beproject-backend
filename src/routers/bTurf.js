@@ -53,8 +53,8 @@ router.get("/bturfs/:id", auth, async (req, res) => {
       return res.status(404).send();
     }
     res.send(bTurf);
-  } catch {
-    (e) => res.status(500).send();
+  } catch (e) {
+    res.status(500).send(e);
   }
 });
 
