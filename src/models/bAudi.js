@@ -7,16 +7,16 @@ const bAudiSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    starttime: {
-      type: String,
-      required: true,
-    },
-    endtime: {
+    time: {
       type: String,
       required: true,
     },
     addons: {
       type: Array,
+    },
+    cost: {
+      type: Number,
+      default: 0,
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
