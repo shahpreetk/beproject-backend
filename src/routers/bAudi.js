@@ -18,7 +18,6 @@ function BookedTime(bAudi, bookedTimings) {
 }
 
 function AvailableTime(allTimings, bookedTimings, availableTimings) {
-  console.log(bookedTimings);
   availableTimings = allTimings.filter(
     (element) => !bookedTimings.includes(element)
   );
