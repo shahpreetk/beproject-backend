@@ -121,6 +121,3 @@ router.get("/baudis/:id", auth, async (req, res) => {
 // });
 
 module.exports = router;
-function typeOf(availableTimings) {
-  throw new Error("Function not implemented.");
-}
