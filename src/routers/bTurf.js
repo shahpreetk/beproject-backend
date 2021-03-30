@@ -2,6 +2,24 @@ const express = require("express");
 const router = new express.Router();
 const auth = require("../middleware/auth");
 const BTurf = require("../models/bTurf");
+const time = require("./time.json");
+
+function AllTime(allTimings) {
+  time.map((timing) => allTimings.push(timing.time));
+  return allTimings;
+}
+
+function BookedTime(bAudi, bookedTimings) {
+  bAudi.map((booking) => bookedTimings.push(booking.time));
+  return bookedTimings;
+}
+
+function AvailableTime(allTimings, bookedTimings, availableTimings) {
+  availableTimings = allTimings.filter(
+    (element) => !bookedTimings.includes(element)
+  );
+  return availableTimings;
+}
 
 router.post("/bturfs", auth, async (req, res) => {
   const bTurf = new BTurf({
@@ -16,33 +34,29 @@ router.post("/bturfs", auth, async (req, res) => {
   }
 });
 
-// router.get("/bturfs", auth, async (req, res) => {
-//   const match = {};
-//   const sort = {};
-
-//   if (req.query.completed) {
-//     match.completed = req.query.completed === "true";
-//   }
-
-//   if (req.query.sortBy) {
-//     const parts = req.query.sortBy.split(":");
-//     sort[parts[0]] = parts[1] === "desc" ? -1 : 1;
-//   }
-//   try {
-//     await req.user.populate({
-//       path: "bturfs",
-//       match,
-//       options: {
-//         limit: parseInt(req.query.limit),
-//         skip: parseInt(req.query.skip),
-//         sort,
-//       },
-//     });
-//     res.send(req.user.bturfs);
-//   } catch (e) {
-//     res.status(500).send();
-//   }
-// });
+router.get("/bturfs/:date", async (req, res) => {
+  const date = req.params.date;
+  try {
+    const bTurf = await BTurf.find({ date });
+    let allTimings = [];
+    let bookedTimings = [];
+    const availableTimings = [];
+    AllTime(allTimings);
+    if (bTurf.length === 0) {
+      res.status(200).send(allTimings);
+    } else {
+      BookedTime(bTurf, bookedTimings);
+      const result = await AvailableTime(
+        allTimings,
+        bookedTimings,
+        availableTimings
+      );
+      res.status(200).send(result);
+    }
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
 
 router.get("/bturfs/:id", auth, async (req, res) => {
   const _id = req.params.id;

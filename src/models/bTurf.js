@@ -7,11 +7,7 @@ const bTurfSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    starttime: {
-      type: String,
-      required: true,
-    },
-    endtime: {
+    time: {
       type: String,
       required: true,
     },
