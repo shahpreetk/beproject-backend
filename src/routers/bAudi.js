@@ -37,9 +37,10 @@ router.post("/baudis", auth, async (req, res) => {
   }
 });
 
-router.get("/baudis", async (req, res) => {
+router.get("/baudis/:date", async (req, res) => {
+  const date = req.params.date;
   try {
-    const bAudi = await BAudi.find({ date: "2021-07-03" });
+    const bAudi = await BAudi.find({ date });
     let allTimings = [];
     let bookedTimings = [];
     const availableTimings = [];
