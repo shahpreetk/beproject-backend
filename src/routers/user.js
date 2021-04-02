@@ -12,8 +12,8 @@ const {
 } = require("../emails/account");
 const { validateCartItems } = require("use-shopping-cart/src/serverUtil");
 
-// router.post("/checkout-sessions", createCheckoutSession);
-router.post("/checkout-sessions", createCheckoutSession2);
+router.post("/checkout-sessions", createCheckoutSession);
+router.get("/checkout-sessions/:sessionId", getCheckoutSession);
 
 router.post("/users", async (req, res) => {
   const user = new User(req.body);
@@ -192,7 +192,7 @@ async function createCheckoutSession(req, res) {
   }
 }
 
-async function createCheckoutSession2(req, res) {
+async function createCheckoutSession(req, res) {
   const domainURL = req.headers.referer;
 
   const { quantity, locale, amount, email } = req.body;
@@ -219,6 +219,23 @@ async function createCheckoutSession2(req, res) {
   res.send({
     sessionId: session.id,
   });
+}
+
+async function getCheckoutSession(req, res) {
+  const { sessionId } = req.params;
+
+  try {
+    if (!sessionId.startsWith("cs_")) {
+      throw Error("Incorrect checkout session id");
+    }
+    const checkout_session = await stripe.checkout.sessions.retrieve(
+      sessionId,
+      { expand: ["payment_intent"] }
+    );
+    res.status(200).json(checkout_session);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 }
 
 module.exports = router;
