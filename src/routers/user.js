@@ -195,25 +195,25 @@ async function createCheckoutSession(req, res) {
 async function createCheckoutSession2(req, res) {
   const domainURL = req.headers.referer;
 
-  const { quantity, locale, amount } = req.body;
+  const { quantity, locale, amount, email } = req.body;
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     locale: locale,
+    customer_email: email,
     line_items: [
       {
         name: "KJSIEIT",
-        images: ["https://picsum.photos/300/300?random=4"],
+        images: [
+          "https://kjsieit.somaiya.edu.in/assets/kjsieit/images/infra/blg.jpg",
+        ],
         quantity: quantity,
         currency: "INR",
-        amount: amount, // Keep the amount on the server to prevent customers from manipulating on client
+        amount: amount,
       },
     ],
-    // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
-    // success_url: `${domainURL}success.html?session_id={CHECKOUT_SESSION_ID}`,
-    success_url: "http://localhost:3000/booking/success",
-    cancel_url: "http://localhost:3000/booking/cancel",
-    // cancel_url: `${domainURL}canceled.html`,
+    success_url: `${domainURL}booking/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${domainURL}cancel`,
   });
 
   res.send({
