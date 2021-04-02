@@ -213,7 +213,7 @@ async function createCheckoutSession2(req, res) {
       },
     ],
     success_url: `${domainURL}booking/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${domainURL}cancel`,
+    cancel_url: `${domainURL}booking/checkout`,
   });
 
   res.send({
