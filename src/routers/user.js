@@ -12,7 +12,8 @@ const {
 } = require("../emails/account");
 const { validateCartItems } = require("use-shopping-cart/src/serverUtil");
 
-router.post("/checkout-sessions", createCheckoutSession);
+// router.post("/checkout-sessions", createCheckoutSession);
+router.post("/checkout-sessions", createCheckoutSession2);
 
 router.post("/users", async (req, res) => {
   const user = new User(req.body);
@@ -189,6 +190,35 @@ async function createCheckoutSession(req, res) {
       success: false,
     });
   }
+}
+
+async function createCheckoutSession2(req, res) {
+  const domainURL = req.headers.referer;
+
+  const { quantity, locale, amount } = req.body;
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    locale: locale,
+    line_items: [
+      {
+        name: "KJSIEIT",
+        images: ["https://picsum.photos/300/300?random=4"],
+        quantity: quantity,
+        currency: "INR",
+        amount: amount, // Keep the amount on the server to prevent customers from manipulating on client
+      },
+    ],
+    // ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
+    // success_url: `${domainURL}success.html?session_id={CHECKOUT_SESSION_ID}`,
+    success_url: "http://localhost:3000/booking/success",
+    cancel_url: "http://localhost:3000/booking/cancel",
+    // cancel_url: `${domainURL}canceled.html`,
+  });
+
+  res.send({
+    sessionId: session.id,
+  });
 }
 
 module.exports = router;
