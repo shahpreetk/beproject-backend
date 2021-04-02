@@ -5,7 +5,6 @@ const router = new express.Router();
 const auth = require("../middleware/auth");
 const BAudi = require("../models/bAudi");
 const time = require("./time.json");
-// const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 function AllTime(allTimings) {
   time.map((timing) => allTimings.push(timing.time));

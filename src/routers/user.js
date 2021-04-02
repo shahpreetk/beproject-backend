@@ -1,13 +1,18 @@
+// @ts-check
 const express = require("express");
 const auth = require("../middleware/auth");
 const router = new express.Router();
 const User = require("../models/user");
 const multer = require("multer");
 const sharp = require("sharp");
+const stripe = require("stripe")(process.env.STRIPE_API_SECRET);
 const {
   sendWelcomeEmail,
   sendCancellationEmail,
 } = require("../emails/account");
+const { validateCartItems } = require("use-shopping-cart/src/serverUtil");
+
+router.post("/checkout-sessions", createCheckoutSession);
 
 router.post("/users", async (req, res) => {
   const user = new User(req.body);
@@ -158,5 +163,61 @@ router.get("/users/:id/avatar", async (req, res) => {
     res.status(404).send();
   }
 });
+
+async function createCheckoutSession(req, res) {
+  console.log("stripe-routes.js 9 | route reached", req.body);
+  let { amount, id } = req.body;
+  console.log("stripe-routes.js 10 | amount and id", amount, id);
+  try {
+    // const cartItems = req.body;
+    // validateCartItems(cartItems);
+
+    // const origin = "http://localhost:3000";
+    // const params = {
+    //   sessionId: session.sessionId,
+    //   lineItems: [{ price: "price_1IbVRqSGnbQ252OAatfNnl0H", quantity: 1 }],
+    //   mode: "payment",
+
+    //   successUrl: "https://localhost:3000/booking/success",
+    //   cancelUrl: "https://localhost:3000/booking/cancelled",
+    // };
+    // console.log(session.sessionId);
+    // const checkoutSession = await stripe.checkout.sessions.create(params);
+
+    // const checkoutSession = await stripe.checkout.sessions.create({
+    //   success_url: "http://localhost:3000/booking/success",
+    //   cancel_url: "http://localhost:3000/booking/checkout",
+    //   payment_method_types: ["card"],
+    //   line_items: [{ price: "price_1IbVRqSGnbQ252OAatfNnl0H", quantity: 1 }],
+    //   // line_items: [{ amount: "1500000", quantity: 1 }],
+    //   mode: "payment",
+    // });
+    // console.log(checkoutSession);
+
+    // try {
+    const payment = await stripe.paymentIntents.create({
+      amount: amount,
+      currency: "INR",
+      description: "Your Company Description",
+      payment_method: id,
+      confirm: true,
+    });
+    console.log("stripe-routes.js 19 | payment", payment);
+    res.json({
+      message: "Payment Successful",
+      success: true,
+    });
+    // }
+    res.status(200).json(checkoutSession);
+  } catch (error) {
+    console.log("stripe-routes.js 17 | error", error);
+    res.json({
+      message: "Payment Failed",
+      success: false,
+    });
+    // console.log(error);
+    // res.status(500).json({ error: error.message });
+  }
+}
 
 module.exports = router;
