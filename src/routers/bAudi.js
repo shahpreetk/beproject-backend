@@ -38,7 +38,7 @@ router.post("/baudis", auth, async (req, res) => {
 
 router.get("/baudis", auth, async (req, res) => {
   BAudi.find({ owner: req.user._id })
-    .sort({ created: 1 })
+    .sort({ date: 1 })
     .then((baudis) => {
       res.status(200).send(baudis);
     })

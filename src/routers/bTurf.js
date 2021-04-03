@@ -36,7 +36,7 @@ router.post("/bturfs", auth, async (req, res) => {
 
 router.get("/bturfs", auth, async (req, res) => {
   BTurf.find({ owner: req.user._id })
-    .sort({ created: 1 })
+    .sort({ date: 1 })
     .then((bturfs) => {
       res.status(200).send(bturfs);
     })
