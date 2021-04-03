@@ -12,7 +12,9 @@ function AllTime(allTimings) {
 }
 
 function BookedTime(bAudi, bookedTimings) {
-  bAudi.map((booking) => bookedTimings.push(booking.time));
+  bAudi.map((booking) => {
+    booking.time.map((time) => bookedTimings.push(time));
+  });
   return bookedTimings;
 }
 

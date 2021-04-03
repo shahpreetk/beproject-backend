@@ -8,7 +8,7 @@ const bTurfSchema = new mongoose.Schema(
       trim: true,
     },
     time: {
-      type: String,
+      type: Array,
       required: true,
     },
     addons: {

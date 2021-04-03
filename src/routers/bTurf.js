@@ -9,8 +9,10 @@ function AllTime(allTimings) {
   return allTimings;
 }
 
-function BookedTime(bAudi, bookedTimings) {
-  bAudi.map((booking) => bookedTimings.push(booking.time));
+function BookedTime(bTurf, bookedTimings) {
+  bTurf.map((booking) => {
+    booking.time.map((time) => bookedTimings.push(time));
+  });
   return bookedTimings;
 }
 
