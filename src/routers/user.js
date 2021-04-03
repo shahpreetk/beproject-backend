@@ -1,10 +1,12 @@
 // @ts-check
 const express = require("express");
 const auth = require("../middleware/auth");
+// @ts-ignore
 const router = new express.Router();
 const User = require("../models/user");
 const multer = require("multer");
 const sharp = require("sharp");
+// @ts-ignore
 const stripe = require("stripe")(process.env.STRIPE_API_SECRET);
 const {
   sendWelcomeEmail,
@@ -19,7 +21,9 @@ router.post("/users", async (req, res) => {
   const user = new User(req.body);
   try {
     await user.save();
+    // @ts-ignore
     sendWelcomeEmail(user.email, user.name);
+    // @ts-ignore
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
   } catch (e) {
@@ -29,6 +33,7 @@ router.post("/users", async (req, res) => {
 
 router.post("/users/login", async (req, res) => {
   try {
+    // @ts-ignore
     const user = await User.findByCredentials(
       req.body.email,
       req.body.password
@@ -154,11 +159,13 @@ router.get("/users/:id/avatar", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
 
+    // @ts-ignore
     if (!user || !user.avatar) {
       throw new Error();
     }
 
     res.set("Content-Type", "image/png");
+    // @ts-ignore
     res.send(user.avatar);
   } catch (e) {
     res.status(404).send();
@@ -182,6 +189,7 @@ async function createCheckoutSession(req, res) {
       message: "Payment Successful",
       success: true,
     });
+    // @ts-ignore
     res.status(200).json(checkoutSession);
   } catch (error) {
     console.log("stripe-routes.js 17 | error", error);
