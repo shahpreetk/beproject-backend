@@ -36,6 +36,17 @@ router.post("/baudis", auth, async (req, res) => {
   }
 });
 
+router.get("/baudis", auth, async (req, res) => {
+  BAudi.find({ owner: req.user._id })
+    .sort({ created: 1 })
+    .then((baudis) => {
+      res.status(200).send(baudis);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
+});
+
 router.get("/baudis/:date", async (req, res) => {
   const date = req.params.date;
   try {
