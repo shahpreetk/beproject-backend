@@ -87,50 +87,50 @@ router.get("/baudis/:id", auth, async (req, res) => {
   }
 });
 
-// router.patch("/baudis/:id", auth, async (req, res) => {
-//   const updates = Object.keys(req.body);
-//   const allowedUpdates = ["date", "starttime", "endtime"];
-//   const isValidOperation = updates.every((update) => {
-//     return allowedUpdates.includes(update);
-//   });
+router.patch("/baudis/:id", auth, async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ["date", "starttime", "endtime"];
+  const isValidOperation = updates.every((update) => {
+    return allowedUpdates.includes(update);
+  });
 
-//   if (!isValidOperation) {
-//     return res.status(400).send({ error: "Invalid updates" });
-//   }
+  if (!isValidOperation) {
+    return res.status(400).send({ error: "Invalid updates" });
+  }
 
-//   try {
-//     const bAudi = await BAudi.findOne({
-//       _id: req.params.id,
-//       owner: req.user._id,
-//     });
+  try {
+    const bAudi = await BAudi.findOne({
+      _id: req.params.id,
+      owner: req.user._id,
+    });
 
-//     if (!bAudi) {
-//       return res.status(404).send();
-//     }
-//     updates.forEach((update) => {
-//       bAudi[update] = req.body[update];
-//     });
+    if (!bAudi) {
+      return res.status(404).send();
+    }
+    updates.forEach((update) => {
+      bAudi[update] = req.body[update];
+    });
 
-//     await bAudi.save();
-//     res.send(bAudi);
-//   } catch (e) {
-//     res.status(400).send(e);
-//   }
-// });
+    await bAudi.save();
+    res.send(bAudi);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
 
-// router.delete("/baudis/:id", auth, async (req, res) => {
-//   try {
-//     const bAudi = await BAudi.findOneAndDelete({
-//       _id: req.params.id,
-//       owner: req.user._id,
-//     });
-//     if (!bAudi) {
-//       return res.status(404).send();
-//     }
-//     res.send(bAudi);
-//   } catch (e) {
-//     res.status(500).send();
-//   }
-// });
+router.delete("/baudis/:id", auth, async (req, res) => {
+  try {
+    const bAudi = await BAudi.findOneAndDelete({
+      _id: req.params.id,
+      owner: req.user._id,
+    });
+    if (!bAudi) {
+      return res.status(404).send();
+    }
+    res.send(bAudi);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
 
 module.exports = router;
